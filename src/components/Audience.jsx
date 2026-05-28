@@ -26,7 +26,7 @@ function Audience() {
           <ul className="audience-list">
             {audienceItems.map((item) => (
               <li className="audience-item" key={item.title}>
-                <span className="check" aria-hidden="true">✓</span>
+                <span className="check audience-check" aria-hidden="true">✓</span>
                 <div>
                   <h3 className="audience-item-title">{item.title}</h3>
                   <p className="audience-item-text">{item.text}</p>
