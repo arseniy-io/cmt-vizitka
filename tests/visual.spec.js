@@ -11,12 +11,7 @@ for (const shot of shots) {
   test(`${shot.name} screenshot`, async ({ page }) => {
     await page.setViewportSize({ width: shot.width, height: shot.height });
     await page.goto('http://localhost:5173', { waitUntil: 'load' });
-    await page.evaluate(() => {
-      document.querySelectorAll('video').forEach((video) => {
-        void video.play().catch(() => {});
-      });
-    });
-    await page.waitForTimeout(3500);
+    await page.waitForTimeout(800);
 
     await page.screenshot({
       path: shot.file,

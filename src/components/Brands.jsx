@@ -14,7 +14,7 @@ function Brands() {
   }
 
   return (
-    <section className="section" id="brands">
+    <section className="section brands-section" id="brands">
       <div className="container">
         <h2>Работаем с проверенными брендами</h2>
         <p className="brands-subtitle">

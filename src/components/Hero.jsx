@@ -1,7 +1,9 @@
-﻿function Hero() {
+﻿import heroImage from '../assets/hero/furniture-production-hero.jpg'
+
+function Hero() {
   return (
     <section className="hero" id="hero">
-      <div className="hero__placeholder" />
+      <div className="hero__placeholder" style={{ '--hero-image': `url(${heroImage})` }} />
       <div className="hero__overlay container">
         <h1>
           ПРОИЗВОДИМ МЕБЕЛЬ

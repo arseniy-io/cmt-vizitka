@@ -2,7 +2,6 @@
   return (
     <section className="section about-section" id="about">
       <div className="container about-grid">
-        <div className="about-placeholder" />
         <article className="about-card">
           <h2 className="about-title">
             Центр Мебельных

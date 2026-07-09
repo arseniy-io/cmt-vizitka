@@ -1,16 +1,54 @@
-# React + Vite
+# CMT Landing
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Локальный React + Vite проект лендинга для "Центра Мебельных Технологий". Это не Mini App и не Tilda-копия: сайт собран компонентно и поддерживается как отдельный кодовый продукт.
 
-Currently, two official plugins are available:
+Быстрый старт:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+```bash
+npm install
+npm run dev
+npm run build
+```
 
-## React Compiler
+Дополнительная проверка:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```bash
+npm run screenshot
+```
 
-## Expanding the ESLint configuration
+Карта документации:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- [docs/INDEX.md](docs/INDEX.md)
+- [docs/PROJECT_CONTEXT.md](docs/PROJECT_CONTEXT.md)
+- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
+- [docs/STYLES.md](docs/STYLES.md)
+- [docs/DESIGN_DENSITY_PLAN.md](docs/DESIGN_DENSITY_PLAN.md)
+- [docs/CONTENT.md](docs/CONTENT.md)
+- [docs/BUILD_DEPLOY.md](docs/BUILD_DEPLOY.md)
+- [docs/AI_CONTEXT.md](docs/AI_CONTEXT.md)
+
+Wiki-links для редакторов с поддержкой internal links:
+
+- `[[docs/INDEX]]`
+- `[[docs/PROJECT_CONTEXT]]`
+- `[[docs/ARCHITECTURE]]`
+- `[[docs/STYLES]]`
+- `[[docs/DESIGN_DENSITY_PLAN]]`
+- `[[docs/CONTENT]]`
+- `[[docs/BUILD_DEPLOY]]`
+- `[[docs/AI_CONTEXT]]`
+
+Ключевые файлы:
+
+- Точка входа: [src/main.jsx](src/main.jsx)
+- Корневая композиция секций: [src/App.jsx](src/App.jsx)
+- Основные стили: [src/styles.css](src/styles.css)
+- Данные брендов: [src/data/brandsData.js](src/data/brandsData.js)
+- Визуальный smoke-test: [tests/visual.spec.js](tests/visual.spec.js)
+
+Текущий принцип поддержки:
+
+- секции лендинга собираются в [src/App.jsx](src/App.jsx);
+- source of truth для визуала находится в [src/styles.css](src/styles.css);
+- source of truth для брендов и текста внутри их карточек находится в [src/data/brandsData.js](src/data/brandsData.js);
+- служебные артефакты сборки и тестов не должны попадать в Git.
