@@ -1,54 +1,46 @@
 # CMT Landing
 
-Локальный React + Vite проект лендинга для "Центра Мебельных Технологий". Это не Mini App и не Tilda-копия: сайт собран компонентно и поддерживается как отдельный кодовый продукт.
+Отдельный сайт-визитка Центра Мебельных Технологий. Он рассказывает B2B-клиентам о производстве мебели под их маркой, услугах, брендах, оборудовании, доставке и условиях сотрудничества.
 
-Быстрый старт:
+Проект собран на React 19 и Vite. Он не связан с Mini App, Tilda, padel-клубом или бронированием кортов.
+
+## Быстрый старт
 
 ```bash
 npm install
 npm run dev
-npm run build
 ```
 
-Дополнительная проверка:
+Локальный адрес обычно: `http://localhost:5173`.
+
+Проверки:
 
 ```bash
+npm run lint
+npm run build
 npm run screenshot
 ```
 
-Карта документации:
+Для `npm run screenshot` сначала должен быть запущен `npm run dev`.
 
-- [docs/INDEX.md](docs/INDEX.md)
-- [docs/PROJECT_CONTEXT.md](docs/PROJECT_CONTEXT.md)
-- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
-- [docs/STYLES.md](docs/STYLES.md)
-- [docs/DESIGN_DENSITY_PLAN.md](docs/DESIGN_DENSITY_PLAN.md)
-- [docs/CONTENT.md](docs/CONTENT.md)
-- [docs/BUILD_DEPLOY.md](docs/BUILD_DEPLOY.md)
-- [docs/AI_CONTEXT.md](docs/AI_CONTEXT.md)
+## Документация
 
-Wiki-links для редакторов с поддержкой internal links:
+- [Карта документов](docs/INDEX.md) - с чего начать.
+- [О проекте](docs/PROJECT.md) - смысл, аудитория и границы проекта.
+- [Архитектура](docs/ARCHITECTURE.md) - где лежит код и за что отвечают файлы.
+- [Дизайн](docs/DESIGN.md) - цвета, сетки, адаптив и визуальные правила.
+- [Важные решения](docs/DECISIONS.md) - поведение, которое нельзя случайно сломать.
+- [Работа с проектом](docs/WORKFLOW.md) - запуск, проверки, деплой и чистота Git.
+- [Правила для Codex](AGENTS.md) - короткий маршрут работы для ИИ.
 
-- `[[docs/INDEX]]`
-- `[[docs/PROJECT_CONTEXT]]`
-- `[[docs/ARCHITECTURE]]`
-- `[[docs/STYLES]]`
-- `[[docs/DESIGN_DENSITY_PLAN]]`
-- `[[docs/CONTENT]]`
-- `[[docs/BUILD_DEPLOY]]`
-- `[[docs/AI_CONTEXT]]`
+Wiki-ссылки: `[[docs/INDEX]]`, `[[docs/PROJECT]]`, `[[docs/ARCHITECTURE]]`, `[[docs/DESIGN]]`, `[[docs/DECISIONS]]`, `[[docs/WORKFLOW]]`.
 
-Ключевые файлы:
+## Главные файлы
 
-- Точка входа: [src/main.jsx](src/main.jsx)
-- Корневая композиция секций: [src/App.jsx](src/App.jsx)
-- Основные стили: [src/styles.css](src/styles.css)
-- Данные брендов: [src/data/brandsData.js](src/data/brandsData.js)
-- Визуальный smoke-test: [tests/visual.spec.js](tests/visual.spec.js)
+- `src/App.jsx` - порядок секций страницы.
+- `src/components/` - компоненты секций.
+- `src/styles.css` - все активные стили и адаптив.
+- `src/data/brandsData.js` - подробные данные брендов.
+- `tests/visual.spec.js` - визуальная проверка Playwright.
 
-Текущий принцип поддержки:
-
-- секции лендинга собираются в [src/App.jsx](src/App.jsx);
-- source of truth для визуала находится в [src/styles.css](src/styles.css);
-- source of truth для брендов и текста внутри их карточек находится в [src/data/brandsData.js](src/data/brandsData.js);
-- служебные артефакты сборки и тестов не должны попадать в Git.
+Сборки, логи, скриншоты и результаты тестов не хранятся в Git. Они перечислены в `.gitignore`.

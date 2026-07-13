@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 
 const services = [
   {
@@ -116,40 +116,123 @@ const services = [
 
 function Services() {
   const [activeServiceId, setActiveServiceId] = useState(null)
+  const serviceTriggerRefs = useRef({})
+  const activeServiceIndex = services.findIndex((service) => service.id === activeServiceId)
+  const activeService = activeServiceIndex >= 0 ? services[activeServiceIndex] : null
+
+  const closeServiceDetails = (serviceId) => {
+    const activeTrigger = serviceTriggerRefs.current[serviceId]
+
+    setActiveServiceId(null)
+
+    window.requestAnimationFrame(() => {
+      activeTrigger?.focus({ preventScroll: true })
+    })
+  }
 
   return (
     <section className="section services-section" id="services">
       <div className="container">
         <h2 className="services-title">Чем мы можем быть полезны</h2>
 
-        <div className="services-grid">
-          {services.map((service, index) => {
-            const isActive = service.id === activeServiceId
+        <div className="services-layout">
+          <div className="services-grid">
+            {services.map((service, index) => {
+              const isActive = service.id === activeServiceId
 
-            return (
-              <button
-                className={`service-card${isActive ? ' service-card--active' : ''}`}
-                key={service.id}
-                type="button"
-                aria-expanded={isActive}
-                onClick={() => setActiveServiceId(isActive ? null : service.id)}
-              >
-                <div className="service-number">{index + 1}</div>
-                <h3 className="service-card-title">{service.title}</h3>
-                <p className="service-card-text">{service.short}</p>
-                {isActive && (
-                  <div className="service-card-details">
-                    <ul>
-                      {service.details.map((detail) => (
-                        <li key={detail}>{detail}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-                <span className="service-card-more">{isActive ? 'Скрыть' : 'Подробнее'}</span>
-              </button>
-            )
-          })}
+              return (
+                <article
+                  className={`service-card${isActive ? ' service-card--active' : ''}`}
+                  key={service.id}
+                >
+                  <button
+                    className="service-card__trigger"
+                    type="button"
+                    ref={(node) => {
+                      serviceTriggerRefs.current[service.id] = node
+                    }}
+                    aria-label={`${isActive ? 'Скрыть' : 'Подробнее'}: ${service.title}`}
+                    aria-expanded={isActive}
+                    aria-controls={`service-inline-details-${service.id} service-details-panel`}
+                    onClick={() => setActiveServiceId(isActive ? null : service.id)}
+                  >
+                    <span className="service-number">{index + 1}</span>
+                    <span className="service-card-title">{service.title}</span>
+                    <span className="service-card-text">{service.short}</span>
+                    <span className="service-card-more service-card-more--trigger">
+                      {isActive ? 'Скрыть' : 'Подробнее'}
+                    </span>
+                  </button>
+
+                  {isActive && (
+                    <div
+                      className="service-card-details service-card-details--inline"
+                      id={`service-inline-details-${service.id}`}
+                    >
+                      <ul>
+                        {service.details.map((detail) => (
+                          <li key={detail}>{detail}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {isActive && (
+                    <button
+                      className="service-card-inline-close"
+                      type="button"
+                      onClick={() => closeServiceDetails(service.id)}
+                    >
+                      Скрыть
+                    </button>
+                  )}
+                </article>
+              )
+            })}
+          </div>
+
+          <aside
+            className={`service-details-panel${activeService ? ' service-details-panel--active' : ''}`}
+            id="service-details-panel"
+            aria-live="polite"
+            aria-labelledby={
+              activeService
+                ? `service-details-panel-title-${activeService.id}`
+                : 'service-details-panel-title-empty'
+            }
+          >
+            {activeService ? (
+              <>
+                <div className="service-details-panel__top">
+                  <span className="service-details-panel__number">{activeServiceIndex + 1}</span>
+                  <span className="service-details-panel__eyebrow">Подробнее об услуге</span>
+                </div>
+                <h3 id={`service-details-panel-title-${activeService.id}`}>
+                  {activeService.title}
+                </h3>
+                <p className="service-details-panel__intro">{activeService.short}</p>
+                <ul>
+                  {activeService.details.map((detail) => (
+                    <li key={detail}>{detail}</li>
+                  ))}
+                </ul>
+                <button
+                  className="service-details-panel__close"
+                  type="button"
+                  onClick={() => closeServiceDetails(activeService.id)}
+                >
+                  Скрыть подробности
+                </button>
+              </>
+            ) : (
+              <div className="service-details-panel__empty">
+                <span className="service-details-panel__range">01-10</span>
+                <span className="service-details-panel__eyebrow">Наши возможности</span>
+                <h3 id="service-details-panel-title-empty">Выберите нужную услугу</h3>
+                <p>Нажмите на карточку слева, чтобы посмотреть, что входит в работу.</p>
+              </div>
+            )}
+          </aside>
         </div>
       </div>
     </section>

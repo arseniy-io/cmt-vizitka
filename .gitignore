@@ -1,30 +1,37 @@
-# Logs
+# Dependencies
+node_modules/
+
+# Build outputs and caches
+dist/
+dist-ssr/
+.vite/
+.cache/
+coverage/
+
+# Tests and visual checks
+playwright-report/
+test-results/
+screenshots/
+
+# Logs and temporary files
 logs/
 *.log
 *.err
-dev.log
-dev.err
+*.tmp
+*.bak
+*.local
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-# Build outputs and dependencies
-node_modules/
-dist/
-dist-ssr/
-playwright-report/
-test-results/
-screenshots/
-*.local
-
-# Editor directories and files
+# Editors and operating systems
 .vscode/*
 !.vscode/extensions.json
-.vscode/settings.json
 .idea/
 .DS_Store
+Thumbs.db
 *.suo
 *.ntvs*
 *.njsproj

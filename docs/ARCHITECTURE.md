@@ -1,17 +1,17 @@
-# Architecture
+# Архитектура
 
-Навигация: [[INDEX]] · [[PROJECT_CONTEXT]] · [[STYLES]] · [[CONTENT]] · [[BUILD_DEPLOY]] · [[AI_CONTEXT]]
+[Карта](./INDEX.md) · [Проект](./PROJECT.md) · [Дизайн](./DESIGN.md) · [Решения](./DECISIONS.md) · [Работа](./WORKFLOW.md)
 
-Markdown links: [INDEX.md](./INDEX.md) · [PROJECT_CONTEXT.md](./PROJECT_CONTEXT.md) · [STYLES.md](./STYLES.md) · [CONTENT.md](./CONTENT.md) · [BUILD_DEPLOY.md](./BUILD_DEPLOY.md) · [AI_CONTEXT.md](./AI_CONTEXT.md)
+Wiki: `[[INDEX]]` · `[[PROJECT]]` · `[[DESIGN]]` · `[[DECISIONS]]` · `[[WORKFLOW]]`.
 
-## Точки входа
+## Основа
 
-- [src/main.jsx](../src/main.jsx) - рендерит `App` и подключает [src/styles.css](../src/styles.css).
-- [src/App.jsx](../src/App.jsx) - собирает страницу из секций в правильном порядке.
+- React 19 отвечает за интерфейс и локальное состояние.
+- Vite запускает разработку и собирает production-версию.
+- `src/main.jsx` подключает `App` и единственный активный файл стилей `src/styles.css`.
+- `src/App.jsx` задаёт порядок секций страницы.
 
-## Композиция страницы
-
-В [src/App.jsx](../src/App.jsx) секции подключаются в таком порядке:
+## Порядок секций
 
 1. `Header`
 2. `Hero`
@@ -25,45 +25,37 @@ Markdown links: [INDEX.md](./INDEX.md) · [PROJECT_CONTEXT.md](./PROJECT_CONTEXT
 10. `LeadForm`
 11. `Footer`
 
-## Компоненты
+Все компоненты лежат в `src/components/`. Один компонент отвечает за одну секцию.
 
-Папка [src/components](../src/components) - основная зона секционной логики. Каждый компонент отвечает за один экранный блок.
+## Где лежат данные
 
-- `Header.jsx` - логотип, навигация, телефоны.
-- `Hero.jsx` - главный оффер и CTA.
-- `Intro.jsx` - поясняющий текст после hero.
-- `Audience.jsx` - карточки целевой аудитории.
-- `Services.jsx` - карточки услуг 1-11.
-- `Brands.jsx` - сетка брендов и раскрывающаяся информационная панель.
-- `Equipment.jsx` - сетка из 6 видео-карточек.
-- `Delivery.jsx` - условия бесплатной и платной доставки.
-- `About.jsx` - блок о компании.
-- `LeadForm.jsx` - локальная форма без реальной отправки.
-- `Footer.jsx` - нижняя часть страницы.
+- `src/components/Header.jsx` - пункты меню и телефоны.
+- `src/components/Audience.jsx` - четыре типа партнёров.
+- `src/components/Services.jsx` - 10 услуг, короткие и подробные описания.
+- `src/data/brandsData.js` - названия, логотипы и подробные тексты брендов.
+- `src/components/Equipment.jsx` - ссылки на шесть видео из Object Storage.
+- Остальные тексты находятся прямо в соответствующих компонентах.
 
-## Source of truth по данным
+## Локальное состояние
 
-- [src/data/brandsData.js](../src/data/brandsData.js) - главный источник данных для секции брендов.
+- `Services` хранит id выбранной услуги. На широком desktop подробности показывает общая боковая панель, на tablet/mobile - активная карточка внутри сетки.
+- `Brands` хранит id выбранного бренда и показывает общую панель под сеткой.
+- `Equipment` хранит номер запущенного видео. Остальные видео останавливаются.
+- `LeadForm` хранит только сообщение после локальной отправки.
 
-Если меняется текст, структура блоков бренда, список преимуществ, история или качество, сначала нужно проверить именно этот файл.
+Сервера, базы данных и реальной отправки формы в проекте нет.
 
-## Source of truth по стилям
+## Ассеты
 
-- [src/styles.css](../src/styles.css) - основной активный stylesheet проекта.
+- `src/assets/logo/` - знак и текстовый логотип шапки.
+- `src/assets/hero/` - фотография первого экрана.
+- `src/assets/brands/` - изображения шести брендов.
+- `public/` - favicon и только статические файлы, доступные по прямому URL.
 
-Важно:
+## Проверки
 
-- [src/main.jsx](../src/main.jsx) импортирует только `./styles.css`.
-- [src/App.css](../src/App.css) и [src/index.css](../src/index.css) сейчас не являются рабочим источником визуала и выглядят как остатки шаблона Vite. Перед использованием их лучше осознанно пересмотреть, а не считать частью текущей архитектуры.
+- `npm run lint` - проверка кода.
+- `npm run build` - production-сборка.
+- `tests/visual.spec.js` - четыре полноэкранных скриншота и проверки адаптива, услуг и фокуса через Playwright.
 
-## Assets
-
-- [src/assets/brands](../src/assets/brands) - изображения брендов.
-- [src/assets/logo](../src/assets/logo) - логотип.
-- [src/assets/hero.png](../src/assets/hero.png) - исторический ассет; сейчас hero визуально построен через плейсхолдер и CSS.
-
-## Тесты и верификация
-
-- [tests/visual.spec.js](../tests/visual.spec.js) - Playwright smoke-test скриншотов.
-
-Этот тест ожидает, что dev-сервер уже доступен по `http://localhost:5173`.
+Подробнее о командах: [WORKFLOW.md](./WORKFLOW.md).

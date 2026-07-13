@@ -1,16 +1,72 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { brandsData } from '../data/brandsData'
 
 function Brands() {
   const [activeBrandId, setActiveBrandId] = useState(null)
+  const [isDetailsPanelVisible, setIsDetailsPanelVisible] = useState(false)
+  const brandTriggerRefs = useRef({})
+  const detailsPanelRef = useRef(null)
 
   const activeBrand = useMemo(
     () => brandsData.find((brand) => brand.id === activeBrandId) ?? null,
     [activeBrandId]
   )
 
+  useEffect(() => {
+    const detailsPanel = detailsPanelRef.current
+
+    if (!detailsPanel) return undefined
+
+    let frameId = null
+
+    const updatePanelVisibility = () => {
+      const panelRect = detailsPanel.getBoundingClientRect()
+
+      setIsDetailsPanelVisible(
+        panelRect.bottom > 72 && panelRect.top < window.innerHeight - 72
+      )
+    }
+
+    const requestVisibilityUpdate = () => {
+      if (frameId !== null) return
+
+      frameId = window.requestAnimationFrame(() => {
+        frameId = null
+        updatePanelVisibility()
+      })
+    }
+
+    requestVisibilityUpdate()
+    window.addEventListener('scroll', requestVisibilityUpdate, { passive: true })
+    window.addEventListener('resize', requestVisibilityUpdate)
+
+    return () => {
+      if (frameId !== null) window.cancelAnimationFrame(frameId)
+      window.removeEventListener('scroll', requestVisibilityUpdate)
+      window.removeEventListener('resize', requestVisibilityUpdate)
+    }
+  }, [activeBrandId])
+
   const toggleBrand = (brandId) => {
     setActiveBrandId((current) => (current === brandId ? null : brandId))
+  }
+
+  const closeActiveBrand = () => {
+    const activeTrigger = brandTriggerRefs.current[activeBrandId]
+
+    setActiveBrandId(null)
+
+    window.requestAnimationFrame(() => {
+      if (!activeTrigger) return
+
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+      activeTrigger.focus({ preventScroll: true })
+      activeTrigger.scrollIntoView({
+        behavior: reduceMotion ? 'auto' : 'smooth',
+        block: 'center',
+      })
+    })
   }
 
   return (
@@ -38,8 +94,13 @@ function Brands() {
                 <button
                   className="brand-card__trigger"
                   type="button"
+                  id={`brand-trigger-${brand.id}`}
+                  ref={(node) => {
+                    brandTriggerRefs.current[brand.id] = node
+                  }}
                   aria-expanded={isActive}
                   aria-pressed={isActive}
+                  aria-controls="brand-details-panel"
                   onClick={() => toggleBrand(brand.id)}
                 >
                   <span className="brand-card__logo-wrap">
@@ -53,7 +114,33 @@ function Brands() {
         </div>
 
         {activeBrand ? (
-          <section className="brand-details-panel" aria-live="polite">
+          <section
+            className="brand-details-panel"
+            id="brand-details-panel"
+            ref={detailsPanelRef}
+            aria-live="polite"
+            aria-labelledby={`brand-trigger-${activeBrand.id}`}
+          >
+            <div
+              className={`brand-details-panel__close-dock ${
+                isDetailsPanelVisible ? 'brand-details-panel__close-dock--visible' : ''
+              }`}
+            >
+              <button
+                className="brand-details-panel__close"
+                type="button"
+                onClick={closeActiveBrand}
+                aria-label={`Скрыть информацию о бренде ${activeBrand.name}`}
+              >
+                <span>Скрыть</span>
+                <span className="brand-details-panel__close-icon" aria-hidden="true">
+                  <svg viewBox="0 0 16 16" focusable="false">
+                    <path d="m3 10 5-5 5 5" />
+                  </svg>
+                </span>
+              </button>
+            </div>
+
             <div className="brand-details-panel__top">
               <div
                 className={`brand-details-panel__logo ${

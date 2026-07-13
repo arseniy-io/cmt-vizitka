@@ -1,33 +1,24 @@
-# Docs Index
+# Документация CMT Landing
 
-Главная точка входа в документацию проекта.
+Это главная карта документов. Начинать работу нужно с корневого [AGENTS.md](../AGENTS.md), а затем открывать только нужный раздел.
 
-Навигация:
+## Документы
 
-- [[PROJECT_CONTEXT]]
-- [[ARCHITECTURE]]
-- [[STYLES]]
-- [[DESIGN_DENSITY_PLAN]]
-- [[CONTENT]]
-- [[BUILD_DEPLOY]]
-- [[AI_CONTEXT]]
+| Документ | Когда читать |
+| --- | --- |
+| [PROJECT.md](./PROJECT.md) | Нужно понять, что это за сайт, для кого он и чего в нём быть не должно |
+| [ARCHITECTURE.md](./ARCHITECTURE.md) | Нужно быстро найти компонент, данные, ассет или источник стилей |
+| [DESIGN.md](./DESIGN.md) | Задача касается цветов, размеров, отступов, сеток или адаптива |
+| [DECISIONS.md](./DECISIONS.md) | Меняется поведение услуг, брендов, видео, шапки или формы |
+| [WORKFLOW.md](./WORKFLOW.md) | Нужно запустить, проверить, собрать или развернуть проект |
 
-Markdown links:
+Wiki-навигация: `[[PROJECT]]` · `[[ARCHITECTURE]]` · `[[DESIGN]]` · `[[DECISIONS]]` · `[[WORKFLOW]]`.
 
-- [PROJECT_CONTEXT.md](./PROJECT_CONTEXT.md)
-- [ARCHITECTURE.md](./ARCHITECTURE.md)
-- [STYLES.md](./STYLES.md)
-- [DESIGN_DENSITY_PLAN.md](./DESIGN_DENSITY_PLAN.md)
-- [CONTENT.md](./CONTENT.md)
-- [BUILD_DEPLOY.md](./BUILD_DEPLOY.md)
-- [AI_CONTEXT.md](./AI_CONTEXT.md)
+## Быстрый маршрут
 
-Как пользоваться этой папкой:
+- Обычная правка секции: `AGENTS.md` -> нужный компонент -> соответствующий раздел `src/styles.css`.
+- Правка брендов: `ARCHITECTURE.md` -> `src/components/Brands.jsx` -> `src/data/brandsData.js`.
+- Правка внешнего вида: `DESIGN.md` -> `src/styles.css`.
+- Ошибка запуска или деплоя: `WORKFLOW.md`.
 
-1. Начинать с [[PROJECT_CONTEXT]] или [PROJECT_CONTEXT.md](./PROJECT_CONTEXT.md), если нужно понять смысл проекта.
-2. Открывать [[ARCHITECTURE]] или [ARCHITECTURE.md](./ARCHITECTURE.md), если нужно быстро найти source of truth по файлам.
-3. Смотреть [[STYLES]] или [STYLES.md](./STYLES.md), если правка касается визуала, адаптива и hover-состояний.
-4. Смотреть [[DESIGN_DENSITY_PLAN]] или [DESIGN_DENSITY_PLAN.md](./DESIGN_DENSITY_PLAN.md), если нужен отдельный план по визуальной плотности и ритму секций.
-5. Смотреть [[CONTENT]] или [CONTENT.md](./CONTENT.md), если правка касается брендов, текстов и медиа.
-6. Смотреть [[BUILD_DEPLOY]] или [BUILD_DEPLOY.md](./BUILD_DEPLOY.md), если правка касается сборки, скриншотов, Git hygiene и деплоя.
-7. Смотреть [[AI_CONTEXT]] или [AI_CONTEXT.md](./AI_CONTEXT.md), если нужно быстро получить правила работы без долгого погружения в код.
+[README](../README.md) · [AGENTS](../AGENTS.md)
