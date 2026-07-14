@@ -9,6 +9,29 @@ const shots = [
   { name: 'mobile-390', width: 390, height: 844, file: 'screenshots/local-mobile-390.png' },
 ];
 
+async function revealWholePage(page) {
+  await page.evaluate(async () => {
+    const wait = (timeout) => new Promise((resolve) => window.setTimeout(resolve, timeout));
+    const maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+    const step = Math.max(320, Math.floor(window.innerHeight * 0.7));
+
+    for (let position = 0; position < maxScroll; position += step) {
+      window.scrollTo(0, position);
+      await wait(70);
+    }
+
+    window.scrollTo(0, maxScroll);
+    await wait(140);
+  });
+
+  await expect
+    .poll(() => page.locator('[data-reveal]:not(.is-revealed)').count())
+    .toBe(0);
+
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await page.waitForTimeout(900);
+}
+
 for (const shot of shots) {
   test(`${shot.name} screenshot`, async ({ page }) => {
     await page.setViewportSize({ width: shot.width, height: shot.height });
@@ -25,15 +48,15 @@ for (const shot of shots) {
 
     expect(pageWidth.scrollWidth).toBeLessThanOrEqual(pageWidth.clientWidth);
 
+    await revealWholePage(page);
+
     const brandImages = page.locator('.brand-card img');
     await expect(brandImages).toHaveCount(6);
-    await page.locator('.brands-section').scrollIntoViewIfNeeded();
     await expect.poll(() =>
       brandImages.evaluateAll((images) =>
         images.every((image) => image.complete && image.naturalWidth > 0)
       )
     ).toBe(true);
-    await page.evaluate(() => window.scrollTo(0, 0));
 
     await page.screenshot({
       path: shot.file,
@@ -64,7 +87,10 @@ for (const shot of shots) {
         })
       );
 
-      expect(cardPositionsAfter).toEqual(cardPositionsBefore);
+      cardPositionsAfter.forEach((position, index) => {
+        expect(Math.abs(position.x - cardPositionsBefore[index].x)).toBeLessThan(1);
+        expect(Math.abs(position.y - cardPositionsBefore[index].y)).toBeLessThan(1);
+      });
 
       const closeDetails = page.getByRole('button', { name: 'Скрыть подробности' });
       await closeDetails.focus();
@@ -82,6 +108,37 @@ for (const shot of shots) {
 
   });
 }
+
+test('content reveals once it enters the viewport', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 720 });
+  await page.goto('http://localhost:5173', { waitUntil: 'load' });
+
+  const target = page.locator('.audience-title');
+
+  await expect(page.locator('html')).toHaveClass(/reveal-ready/);
+  await expect(target).not.toHaveClass(/is-revealed/);
+  await expect.poll(() => target.evaluate((element) => getComputedStyle(element).opacity)).toBe('0');
+
+  await target.scrollIntoViewIfNeeded();
+
+  await expect(target).toHaveClass(/is-revealed/);
+  await expect.poll(() => target.evaluate((element) => getComputedStyle(element).opacity)).toBe('1');
+});
+
+test('reduced motion keeps all content visible', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.setViewportSize({ width: 1280, height: 720 });
+  await page.goto('http://localhost:5173', { waitUntil: 'load' });
+
+  const revealTargets = page.locator('[data-reveal]');
+
+  await expect(revealTargets.first()).toHaveClass(/is-revealed/);
+  expect(
+    await revealTargets.evaluateAll((elements) =>
+      elements.every((element) => getComputedStyle(element).opacity === '1')
+    )
+  ).toBe(true);
+});
 
 test('desktop service details remain usable on a short screen', async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 600 });

@@ -35,7 +35,7 @@ function Equipment() {
   return (
     <section className="section" id="equipment">
       <div className="container">
-        <h2>Оборудование</h2>
+        <h2 data-reveal>Оборудование</h2>
         <div className="equipment-grid">
           {equipmentVideos.map((src, idx) => {
             const isActive = activeVideoIndex === idx
@@ -46,6 +46,8 @@ function Equipment() {
                   isActive ? 'equipment-item--active' : ''
                 }`}
                 key={src + idx}
+                data-reveal="card"
+                data-reveal-delay={String((idx % 3) * 65)}
               >
                 <video
                   ref={(node) => {

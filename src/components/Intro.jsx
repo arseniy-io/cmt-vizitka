@@ -2,12 +2,12 @@
   return (
     <section className="intro-section" id="intro">
       <div className="container">
-        <h2 className="intro-title">
+        <h2 className="intro-title" data-reveal>
           Продаёте мебель,
           <br />
           но нет собственного производства?
         </h2>
-        <p className="intro-text">
+        <p className="intro-text" data-reveal data-reveal-delay="70">
           Мы поможем реализовать проект от технической проработки до готового комплекта для сборки:
           подготовим 3D-модель в БАЗИС-Мебельщике, детали, фурнитуру, упаковку и доставку.
         </p>

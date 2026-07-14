@@ -2,7 +2,7 @@
   return (
     <section className="section about-section" id="about">
       <div className="container about-grid">
-        <article className="about-card">
+        <article className="about-card" data-reveal="card">
           <h2 className="about-title">
             Центр Мебельных
             <br />

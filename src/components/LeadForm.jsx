@@ -12,9 +12,9 @@ function LeadForm() {
   return (
     <section className="section section--form" id="lead-form">
       <div className="container">
-        <h2>Получить партнёрские условия</h2>
-        <p className="form-sub">Оставьте контакты, и мы свяжемся с вами для обсуждения сотрудничества.</p>
-        <form className="lead-form" onSubmit={onSubmit}>
+        <h2 data-reveal>Получить партнёрские условия</h2>
+        <p className="form-sub" data-reveal data-reveal-delay="60">Оставьте контакты, и мы свяжемся с вами для обсуждения сотрудничества.</p>
+        <form className="lead-form" onSubmit={onSubmit} data-reveal="card" data-reveal-delay="100">
           <input type="text" name="name" placeholder="Ваше имя" required />
           <input type="tel" name="phone" placeholder="Телефон" required />
           <textarea name="comment" rows="4" placeholder="Комментарий" />

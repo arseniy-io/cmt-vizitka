@@ -25,11 +25,16 @@ function Audience() {
   return (
     <section className="audience-section" id="audience">
       <div className="container">
-        <h2 className="audience-title">Кому подойдёт сотрудничество</h2>
+        <h2 className="audience-title" data-reveal>Кому подойдёт сотрудничество</h2>
 
         <div className="audience-grid">
-          {audienceItems.map((item) => (
-            <article className="audience-card" key={item.title}>
+          {audienceItems.map((item, index) => (
+            <article
+              className="audience-card"
+              key={item.title}
+              data-reveal="card"
+              data-reveal-delay={index % 2 === 0 ? '0' : '70'}
+            >
               <div className="audience-card__number" aria-hidden="true">
                 {item.number}
               </div>
@@ -39,7 +44,7 @@ function Audience() {
           ))}
         </div>
 
-        <div className="audience-cta">
+        <div className="audience-cta" data-reveal data-reveal-delay="70">
           <a href="#lead-form">Получить условия сотрудничества</a>
         </div>
       </div>

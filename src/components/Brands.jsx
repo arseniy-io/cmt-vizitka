@@ -72,15 +72,15 @@ function Brands() {
   return (
     <section className="section brands-section" id="brands">
       <div className="container">
-        <h2>Работаем с проверенными брендами</h2>
-        <p className="brands-subtitle">
+        <h2 data-reveal>Работаем с проверенными брендами</h2>
+        <p className="brands-subtitle" data-reveal data-reveal-delay="70">
           На складе более 90 актуальных декоров для
           <br />
           быстрого запуска проектов в производство
         </p>
 
         <div className="brands-grid">
-          {brandsData.map((brand) => {
+          {brandsData.map((brand, index) => {
             const isActive = activeBrandId === brand.id
 
             return (
@@ -90,6 +90,8 @@ function Brands() {
                   isActive ? 'brand-card--active' : ''
                 }`}
                 data-tone={brand.tone}
+                data-reveal="card"
+                data-reveal-delay={String((index % 3) * 65)}
               >
                 <button
                   className="brand-card__trigger"

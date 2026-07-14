@@ -2081,7 +2081,42 @@ textarea:focus {
   }
 }
 
+html.reveal-ready [data-reveal] {
+  --reveal-distance: 24px;
+}
+
+html.reveal-ready [data-reveal]:not(.reveal-complete) {
+  transition-property: opacity, translate;
+  transition-duration: 0.68s;
+  transition-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+html.reveal-ready [data-reveal]:not(.is-revealed) {
+  opacity: 0;
+  translate: 0 var(--reveal-distance);
+}
+
+html.reveal-ready [data-reveal="card"] {
+  --reveal-distance: 20px;
+}
+
+@media (max-width: 768px) {
+  html.reveal-ready [data-reveal] {
+    --reveal-distance: 16px;
+  }
+
+  html.reveal-ready [data-reveal]:not(.reveal-complete) {
+    transition-duration: 0.6s;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  html.reveal-ready [data-reveal] {
+    opacity: 1 !important;
+    translate: none !important;
+  }
+
   * {
     transition: none !important;
     animation: none !important;

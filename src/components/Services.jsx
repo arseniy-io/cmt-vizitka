@@ -133,7 +133,7 @@ function Services() {
   return (
     <section className="section services-section" id="services">
       <div className="container">
-        <h2 className="services-title">Чем мы можем быть полезны</h2>
+        <h2 className="services-title" data-reveal>Чем мы можем быть полезны</h2>
 
         <div className="services-layout">
           <div className="services-grid">
@@ -144,6 +144,8 @@ function Services() {
                 <article
                   className={`service-card${isActive ? ' service-card--active' : ''}`}
                   key={service.id}
+                  data-reveal="card"
+                  data-reveal-delay={index % 2 === 0 ? '0' : '70'}
                 >
                   <button
                     className="service-card__trigger"

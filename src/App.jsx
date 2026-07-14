@@ -9,10 +9,12 @@ import Delivery from './components/Delivery'
 import About from './components/About'
 import LeadForm from './components/LeadForm'
 import Footer from './components/Footer'
+import ScrollReveal from './components/ScrollReveal'
 
 function App() {
   return (
     <div className="page">
+      <ScrollReveal />
       <Header />
       <main>
         <Hero />
