@@ -23,7 +23,7 @@ function Equipment() {
         void video.play().catch(() => {})
       } else {
         video.pause()
-        video.currentTime = 0
+        if (video.readyState > 0) video.currentTime = 0
       }
     })
   }, [activeVideoIndex])
@@ -54,10 +54,10 @@ function Equipment() {
                     videoRefs.current[idx] = node
                   }}
                   className="equipment-video"
-                  src={src}
+                  src={isActive ? src : undefined}
                   controls={isActive}
                   playsInline
-                  preload="metadata"
+                  preload="none"
                   onEnded={() => setActiveVideoIndex(null)}
                   onPause={() => {
                     setActiveVideoIndex((current) => (current === idx ? null : current))

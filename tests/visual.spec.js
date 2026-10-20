@@ -125,6 +125,70 @@ test('content reveals once it enters the viewport', async ({ page }) => {
   await expect.poll(() => target.evaluate((element) => getComputedStyle(element).opacity)).toBe('1');
 });
 
+test('fast scroll does not leave content hidden', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 720 });
+  await page.goto('http://localhost:5173', { waitUntil: 'load' });
+  await page.reload({ waitUntil: 'domcontentloaded' });
+
+  for (let index = 0; index < 8; index += 1) {
+    await page.mouse.wheel(0, 600);
+    await page.waitForTimeout(25);
+
+    expect(
+      await page.locator('[data-reveal]').evaluateAll((elements) =>
+        elements.filter((element) => {
+          const rect = element.getBoundingClientRect();
+          return (
+            rect.bottom > 0 &&
+            rect.top < window.innerHeight &&
+            Number(getComputedStyle(element).opacity) < 0.95
+          );
+        }).length
+      )
+    ).toBe(0);
+  }
+
+  await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+
+  await expect
+    .poll(() => page.locator('[data-reveal]:not(.reveal-complete)').count())
+    .toBe(0);
+
+  expect(
+    await page.locator('[data-reveal]').evaluateAll((elements) =>
+      elements
+        .filter((element) => {
+          const rect = element.getBoundingClientRect();
+          return rect.bottom > 0 && rect.top < window.innerHeight;
+        })
+        .every((element) => getComputedStyle(element).opacity === '1')
+    )
+  ).toBe(true);
+});
+
+test('equipment videos load only after a click', async ({ page }) => {
+  const requestedVideos = new Set();
+
+  page.on('request', (request) => {
+    if (request.url().includes('.mp4')) requestedVideos.add(request.url());
+  });
+
+  await page.setViewportSize({ width: 1280, height: 720 });
+  await page.goto('http://localhost:5173', { waitUntil: 'load' });
+  await page.locator('#equipment').scrollIntoViewIfNeeded();
+  await page.waitForTimeout(300);
+
+  const firstVideo = page.locator('.equipment-video').first();
+
+  await expect(firstVideo).not.toHaveAttribute('src', /.+/);
+  expect(requestedVideos.size).toBe(0);
+
+  await page.locator('.equipment-play').first().click();
+
+  await expect(firstVideo).toHaveAttribute('src', /IMG_0727\.mp4$/);
+  await expect.poll(() => requestedVideos.size).toBe(1);
+});
+
 test('reduced motion keeps all content visible', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.setViewportSize({ width: 1280, height: 720 });
