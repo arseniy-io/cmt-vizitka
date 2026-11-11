@@ -1356,7 +1356,7 @@ p { margin: 0; }
 }
 
 .section--form {
-  padding: 78px 0 88px;
+  padding: 0 0 88px;
 }
 
 .section--form .container {
@@ -1378,57 +1378,43 @@ p { margin: 0; }
   margin-bottom: 18px;
 }
 
-.lead-form {
+.contact-options {
   display: grid;
-  gap: 12px;
-  max-width: 680px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  max-width: 800px;
+  margin-top: 28px;
 }
 
-.lead-form input,
-.lead-form textarea {
-  width: 100%;
-  background: #fff;
-  border: 0;
-  border-radius: 999px;
-  padding: 16px 20px;
-  font-size: 20px;
-  color: #111;
-}
-
-.lead-form textarea {
-  border-radius: 28px;
-}
-
-input:focus,
-textarea:focus {
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(255, 118, 0, 0.35);
-}
-
-.consent {
+.contact-option {
   display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 15px;
-  color: #e3d8cd;
+  flex-direction: column;
+  gap: 10px;
+  padding: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.04);
 }
 
-.consent input {
-  width: 20px;
-  height: 20px;
-}
-
-.lead-form .btn {
-  width: 360px;
-  max-width: 100%;
-  height: 60px;
-  border-radius: 999px;
-}
-
-.form-message {
-  margin-top: 14px;
+.contact-option span {
+  color: #e0d6cc;
   font-size: 16px;
-  color: var(--accent);
+}
+
+.contact-option a {
+  color: #fff;
+  font-size: clamp(19px, 2vw, 25px);
+  font-weight: 700;
+  overflow-wrap: anywhere;
+  text-decoration: none;
+}
+
+.contact-option a:hover { color: var(--accent); }
+.contact-option a:focus-visible { outline: 2px solid var(--accent); outline-offset: 5px; }
+
+@media (max-width: 600px) {
+  .contact-options { grid-template-columns: 1fr; gap: 12px; }
+  .contact-option { padding: 20px; }
 }
 
 .footer {
@@ -1746,10 +1732,10 @@ textarea:focus {
     max-width: 100%;
   }
   #equipment.section,
-  #delivery.section,
-  .section--form {
+  #delivery.section {
     padding: 60px 0 70px;
   }
+  .section--form { padding: 0 0 70px; }
   #equipment h2,
   .delivery-title,
   .section--form h2 {
@@ -1987,8 +1973,8 @@ textarea:focus {
     font-size: 9px;
   }
   #equipment.section,
-  #delivery.section,
-  .section--form { padding: 56px 0 62px; }
+  #delivery.section { padding: 56px 0 62px; }
+  .section--form { padding: 0 0 62px; }
   .delivery-title { font-size: 34px; margin-bottom: 18px; }
   .delivery-col h3 { font-size: 20px; }
   .delivery-col p, .about-body p, .form-sub, .brands-subtitle { font-size: 18px; }
