@@ -1,4 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
+import poster0727 from '../assets/equipment/IMG_0727.webp'
+import poster0728 from '../assets/equipment/IMG_0728.webp'
+import poster0731 from '../assets/equipment/IMG_0731.webp'
+import poster0732 from '../assets/equipment/IMG_0732.webp'
+import poster0733 from '../assets/equipment/IMG_0733.webp'
 
 const equipmentVideos = [
   'https://storage.yandexcloud.net/items-photos-test/vizitka/IMG_0727.mp4',
@@ -8,6 +13,7 @@ const equipmentVideos = [
   'https://storage.yandexcloud.net/items-photos-test/vizitka/IMG_0733.mp4',
   'https://storage.yandexcloud.net/items-photos-test/vizitka/IMG_0727.mp4',
 ]
+const equipmentPosters = [poster0727, poster0728, poster0731, poster0732, poster0733, poster0727]
 
 function Equipment() {
   const [activeVideoIndex, setActiveVideoIndex] = useState(null)
@@ -41,19 +47,14 @@ function Equipment() {
             const isActive = activeVideoIndex === idx
 
             return (
-              <div
-                className={`equipment-placeholder equipment-item ${
-                  isActive ? 'equipment-item--active' : ''
-                }`}
-                key={src + idx}
-                data-reveal="card"
-                data-reveal-delay={String((idx % 3) * 65)}
-              >
+              <div key={src + idx} data-reveal="card" data-reveal-delay={String((idx % 3) * 65)}>
+                <div className={`equipment-placeholder equipment-item ${isActive ? 'equipment-item--active' : ''}`}>
                 <video
                   ref={(node) => {
                     videoRefs.current[idx] = node
                   }}
                   className="equipment-video"
+                  poster={equipmentPosters[idx]}
                   src={isActive ? src : undefined}
                   controls={isActive}
                   playsInline
@@ -75,6 +76,7 @@ function Equipment() {
                   </span>
                   <span className="equipment-play__text">Смотреть</span>
                 </button>
+                </div>
               </div>
             )
           })}

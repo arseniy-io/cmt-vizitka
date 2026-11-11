@@ -181,12 +181,37 @@ test('equipment videos load only after a click', async ({ page }) => {
   const firstVideo = page.locator('.equipment-video').first();
 
   await expect(firstVideo).not.toHaveAttribute('src', /.+/);
+  expect(await page.locator('.equipment-video').evaluateAll(async (videos) =>
+    Promise.all(videos.map(async (video) => {
+      if (!video.poster) return false;
+      const image = new Image();
+      image.src = video.poster;
+      try {
+        await image.decode();
+        return image.naturalWidth > 0;
+      } catch {
+        return false;
+      }
+    }))
+  )).toEqual([true, true, true, true, true, true]);
   expect(requestedVideos.size).toBe(0);
 
   await page.locator('.equipment-play').first().click();
 
   await expect(firstVideo).toHaveAttribute('src', /IMG_0727\.mp4$/);
+  await expect(firstVideo).toBeVisible();
+  await expect.poll(() => firstVideo.locator('..').locator('..').evaluate(
+    (element) => getComputedStyle(element).opacity
+  )).toBe('1');
   await expect.poll(() => requestedVideos.size).toBe(1);
+
+  await page.locator('.equipment-play').nth(1).click();
+  const secondVideo = page.locator('.equipment-video').nth(1);
+  await expect(secondVideo).toBeVisible();
+  await expect.poll(() => secondVideo.locator('..').locator('..').evaluate(
+    (element) => getComputedStyle(element).opacity
+  )).toBe('1');
+  await expect(firstVideo).not.toHaveAttribute('src', /.+/);
 });
 
 test('reduced motion keeps all content visible', async ({ page }) => {

@@ -12,16 +12,20 @@ const navItems = [
 
 const phoneItems = [
   {
-    href: 'tel:+78202505050',
-    label: 'Череповец:',
-    number: '+7 (8202) 50-50-50',
-    ariaLabel: 'Позвонить в Череповец по номеру +7 8202 50 50 50',
+    href: 'tel:+78202241153',
+    number: '8 (8202) 24-11-53',
+    ariaLabel: 'Позвонить по номеру 8 8202 24 11 53',
   },
   {
-    href: 'tel:+78172505050',
-    label: 'Вологда:',
-    number: '+7 (8172) 50-50-50',
-    ariaLabel: 'Позвонить в Вологду по номеру +7 8172 50 50 50',
+    href: 'tel:+78202241152',
+    number: '8 (8202) 24-11-52',
+    ariaLabel: 'Позвонить по номеру 8 8202 24 11 52',
+  },
+  {
+    href: 'tel:+79212354247',
+    label: 'Заказы под ключ:',
+    number: '8 (921) 235-42-47',
+    ariaLabel: 'Заказы под ключ: позвонить по номеру 8 921 235 42 47',
   },
 ]
 
@@ -61,7 +65,7 @@ function Header() {
         <div className="phones" aria-label="Контакты">
           {phoneItems.map((item) => (
             <a key={item.href} href={item.href} aria-label={item.ariaLabel}>
-              <span className="phones__label">{item.label}</span>
+              {item.label && <span className="phones__label">{item.label}</span>}
               <span className="phones__number">{item.number}</span>
             </a>
           ))}
